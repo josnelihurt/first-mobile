@@ -22,3 +22,58 @@
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 replay_pid*
+
+# Ignore Android specific files
+.gradle/
+.idea/
+local.properties
+.DS_Store
+/build/
+.cxx/
+captures/
+.externalNativeBuild/
+.navigation/
+*.iml
+*.hprof
+
+# Keystore files
+*.jks
+*.keystore
+
+# Gradle files
+.gradle/
+build/
+*/build/
+!gradle-wrapper.jar
+**/gradle-wrapper.properties
+
+# Kotlin specific files
+*.kts
+
+# Avoid Mac system files
+.DS_Store
+
+# Android Studio generated files
+.idea/
+.idea/caches
+.idea/libraries
+.idea/modules.xml
+.idea/workspace.xml
+.idea/navEditor.xml
+.idea/assetWizardSettings.xml
+.idea/gradle.xml
+.idea/dictionaries/
+.idea/vcs.xml
+.idea/misc.xml
+
+# Android log and crash files
+*.log
+crashlytics-build.properties
+
+# NDK
+/obj/
+*.hprof
+
+# IntelliJ specific files
+/out/
+
