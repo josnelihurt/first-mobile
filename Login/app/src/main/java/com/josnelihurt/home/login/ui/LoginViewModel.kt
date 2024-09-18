@@ -1,22 +1,41 @@
 package com.josnelihurt.home.login.ui
 
-import androidx.compose.runtime.Composable
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Text
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import android.util.Patterns
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import kotlinx.coroutines.delay
 
-@Preview(showBackground = true)
-@Composable
-fun LoginScreen() {
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        Text(
-            text = "Login",
-        )
+class LoginViewModel : ViewModel() {
+
+    private val _email = MutableLiveData<String>();
+    val email : LiveData<String> = _email;
+
+    private val _password = MutableLiveData<String>();
+    val password : LiveData<String> = _password;
+
+    private val _logginEnabled = MutableLiveData<Boolean>();
+    val logginEnabled: LiveData<Boolean> = _logginEnabled;
+
+    private val _isLogging = MutableLiveData<Boolean>();
+    val isLogging: LiveData<Boolean> = _isLogging;
+
+    fun onLoginChanged(email: String, password: String) {
+        _email.value = email
+        _password.value = password
+        _logginEnabled.value = isValidEmail(email) && isValidPassword(password)
+    }
+
+    private fun isValidEmail(email: String): Boolean  = Patterns.EMAIL_ADDRESS.matcher(email).matches()
+    private fun isValidPassword(password: String): Boolean = password.length > 6
+
+
+    suspend fun login() {
+        _logginEnabled.value = false
+        _isLogging.value = true
+        //TODO: change this by the login logic
+        delay(timeMillis = 2000)
+        _logginEnabled.value = true
+        _isLogging.value = false
     }
 }
