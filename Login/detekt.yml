@@ -1,0 +1,9 @@
+style:
+  MemberOrdering:
+    active: true
+    order: [
+      "public_property",
+      "private_property",
+      "public_function",
+      "private_function"
+    ]

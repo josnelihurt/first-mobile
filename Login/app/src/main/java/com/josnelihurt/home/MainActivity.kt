@@ -4,20 +4,21 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.josnelihurt.home.login.ui.LoginScreen
-import com.josnelihurt.home.login.ui.LoginViewModel
+import androidx.activity.viewModels
+import com.josnelihurt.home.login.presentation.view.loginScreen
+import com.josnelihurt.home.login.presentation.viewmodel.LoginViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
-class MainActivity : ComponentActivity() {
+/**
+ * Main activity class that hosts the login screen
+ */
+@AndroidEntryPoint
+class MainActivity: ComponentActivity() {
+    private val _loginViewModel: LoginViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContent { LoginScreen(viewModel = LoginViewModel()) }
+        setContent { loginScreen(viewModel = _loginViewModel) }
     }
 }
 
