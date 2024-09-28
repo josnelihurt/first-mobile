@@ -1,16 +1,20 @@
 package com.josnelihurt.home.login.domain.interactors
 
 import com.josnelihurt.home.login.domain.entities.SettingsEntity
-import com.josnelihurt.home.login.domain.repositories.SettingsRepository
+import com.josnelihurt.home.login.domain.usecases.LoadSettingsUseCase
+import com.josnelihurt.home.login.domain.usecases.SaveSettingsUseCase
 import javax.inject.Inject
 
 class SettingInteractorImpl @Inject constructor(
-    private val settingsRepository: SettingsRepository
+    private val saveSettingsUseCase: SaveSettingsUseCase,
+    private val loadSettingsUseCase: LoadSettingsUseCase
 ) : SettingInteractor {
-    override fun save(settings: SettingsEntity) {
-        settingsRepository.save(settings)
-    }
-    override fun load(): SettingsEntity {
-        return settingsRepository.load()
-    }
+    /**
+     * Save the settings
+     */
+    override fun save(settings: SettingsEntity) = saveSettingsUseCase(settings)
+    /**
+     * Load the settings
+     */
+    override fun load(): SettingsEntity = loadSettingsUseCase()
 }

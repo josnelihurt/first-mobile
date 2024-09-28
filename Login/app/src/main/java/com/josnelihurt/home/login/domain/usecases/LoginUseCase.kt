@@ -8,6 +8,7 @@ const val MOCK_LOGIN_DELAY = 2000L
 
 class LoginUseCase @Inject constructor() {
     suspend operator fun invoke(loginEntity: LoginEntity) {
+        loginEntity.isValid()
         delay(timeMillis = MOCK_LOGIN_DELAY)
     }
 }

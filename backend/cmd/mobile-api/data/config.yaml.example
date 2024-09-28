@@ -1,0 +1,3 @@
+authorization_service_url: "https://your_authentik_server/application/o/authorize/"
+token_service_url: "https://your_authentik_server/application/o/token/"
+client_id: "YOUR_CLIENT_ID"

@@ -1,9 +1,11 @@
 package com.josnelihurt.home.login.domain.interactors
 
+import android.net.Uri
 import com.josnelihurt.home.login.domain.entities.LoginEntity
 import com.josnelihurt.home.login.domain.usecases.LoginRestoreUseCase
 import com.josnelihurt.home.login.domain.usecases.LoginUseCase
 import com.josnelihurt.home.login.domain.usecases.SaveLoginUseCase
+import net.openid.appauth.AuthorizationServiceConfiguration
 import javax.inject.Inject
 
 /**

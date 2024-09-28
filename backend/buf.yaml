@@ -1,0 +1,15 @@
+version: v2
+breaking:
+  use:
+    - FILE
+modules:
+  - path: proto/v1
+    breaking:
+      use:
+        - WIRE_JSON
+deps:
+  - buf.build/googleapis/googleapis
+lint:
+  use:
+    - DEFAULT
+    - UNARY_RPC

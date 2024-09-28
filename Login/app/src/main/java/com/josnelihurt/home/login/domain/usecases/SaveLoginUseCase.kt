@@ -7,7 +7,5 @@ import javax.inject.Inject
 class SaveLoginUseCase @Inject constructor(
     private val repository: LoginRepository
 ) {
-    operator fun invoke(loginEntity: LoginEntity) {
-        repository.save(loginEntity.copyToSave())
-    }
+    operator fun invoke(loginEntity: LoginEntity) = repository.save(loginEntity.copyToSave())
 }

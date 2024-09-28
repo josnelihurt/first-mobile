@@ -1,6 +1,7 @@
 package com.josnelihurt.home.login.presentation.view
 
 import android.content.res.Configuration
+import android.widget.Toast
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -28,11 +29,10 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -40,34 +40,38 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.josnelihurt.home.R
 import com.josnelihurt.home.login.presentation.viewmodel.LoginState
+import com.josnelihurt.home.login.presentation.viewmodel.LoginUISate
 import com.josnelihurt.home.login.presentation.viewmodel.LoginViewModel
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 const val LANDSCAPE_LOGO_SIZE = 0.3f
 const val PORTRAIT_LOGO_SIZE = 0.8f
+const val BTN_COLOR = 0xFF6200EE
+const val LAUNCH_EFFECT_DELAY = 500L
 
 @Composable
 fun loginScreen(
     viewModel: LoginViewModel
 ) {
-    var showServerDialog by remember { mutableStateOf(false) }
-    if (showServerDialog) {
-        serverDialog(
-            initialValue = viewModel.server,
-            onDismiss = { showServerDialog = false },
-            onSave = { newValue ->
-                viewModel.onServerChanged(newValue)
-                showServerDialog = false
-            }
-        )
+    when (val state = viewModel.uiState.collectAsState(LoginUISate.Idle(LoginState())).value) {
+        is LoginUISate.Loading -> showLoading()
+        LoginUISate.Animating -> viewModel.hideAnimating()//TODO: add animation
+        is LoginUISate.LoggedIn -> navigateToLogged()
+        is LoginUISate.Settings -> settingsDialog(viewModel)
+        is LoginUISate.Error -> showError(state.message, viewModel::hideError)
+        is LoginUISate.Idle -> idleScreen(viewModel)
     }
+}
+
+@Composable
+private fun idleScreen(viewModel: LoginViewModel) {
     Scaffold(
         modifier = Modifier
             .fillMaxSize()
@@ -80,9 +84,40 @@ fun loginScreen(
             )
         },
         topBar = topBar(
-            onSettings = { showServerDialog = true }
+            onSettings = { viewModel.showSettings() }
         ),
     )
+}
+
+@Composable
+private fun showError(message: String, hideError: () -> Unit) {
+    val toast = Toast.makeText(
+        LocalContext.current,
+        message,
+        Toast.LENGTH_SHORT
+    )
+    toast.addCallback(object : Toast.Callback() {
+        override fun onToastHidden() {
+            hideError()
+        }
+    })
+    toast.show()
+}
+
+@Composable
+private fun settingsDialog(viewModel: LoginViewModel) {
+    serverDialog(
+        initialValue = viewModel.server,
+        onDismiss = { viewModel.hideSettings() },
+        onSave = { newValue ->
+            viewModel.onServerChanged(newValue)
+        }
+    )
+}
+
+@Composable
+private fun navigateToLogged() {
+    //TODO: navigate to logged screen
 }
 
 @Composable
@@ -127,24 +162,12 @@ fun getLogoFraction(orientation: Int): Float {
         screenHeightFraction = LANDSCAPE_LOGO_SIZE
     return screenHeightFraction
 }
+
 @Composable
 fun login(modifier: Modifier, viewModel: LoginViewModel) {
-    val state: LoginState by viewModel.loginState.observeAsState(initial = LoginState())
-    val email = state.email
-    val password = state.password
-    val loggingEnabled = state.loginEnabled
-    val saveLogin = state.saveLogin
-    val coroutineScope = rememberCoroutineScope()
-    val isLogging = state.isLogging
+    val state = viewModel.loginState
     val configuration = LocalConfiguration.current
     val screenHeightFraction = getLogoFraction(configuration.orientation)
-    if (isLogging) {
-        showLoading()
-        return
-    }
-    var onLogging: () -> Unit = {
-        coroutineScope.launch { viewModel.login() }
-    }
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -156,13 +179,15 @@ fun login(modifier: Modifier, viewModel: LoginViewModel) {
                 .fillMaxSize(fraction = screenHeightFraction)
         )
         Spacer(modifier = Modifier.padding(16.dp))
-        emailField(value = email, onChange = { viewModel.onLoginChanged(it, password) })
+        userField(value = state.email, onChange = { viewModel.onLoginChanged(it, state.password) })
         Spacer(modifier = Modifier.padding(4.dp))
-        passwordField(value = password, onChange = { viewModel.onLoginChanged(email, it) })
+        passwordField(
+            value = state.password,
+            onChange = { viewModel.onLoginChanged(state.email, it) })
         Spacer(modifier = Modifier.padding(4.dp))
-        saveLogin(checked = saveLogin, onCheckedChange = { viewModel.onSaveLogin(it) })
+        saveLogin(checked = state.saveLogin, onCheckedChange = { viewModel.onSaveLogin(it) })
         Spacer(modifier = Modifier.padding(16.dp))
-        loginButton(enabled = loggingEnabled, onLogging = onLogging)
+        loginButton(enabled = state.loginEnabled, onLogging = { viewModel.login() })
     }
 }
 
@@ -187,7 +212,7 @@ fun showLoading() {
         CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
     }
 }
-const val LAUNCH_EFFECT_DELAY = 500L
+
 @Composable
 fun logo(modifier: Modifier) {
     var expanded by remember { mutableStateOf(false) }
@@ -205,8 +230,6 @@ fun logo(modifier: Modifier) {
             .scale(scale)
     )
 }
-
-const val BTN_COLOR = 0xFF6200EE
 
 @Composable
 fun loginButton(enabled: Boolean, onLogging: () -> Unit) {
@@ -227,8 +250,8 @@ fun loginButton(enabled: Boolean, onLogging: () -> Unit) {
 }
 
 @Composable
-fun emailField(value: String, onChange: (String) -> Unit) {
-    loginTextField("Email", KeyboardType.Email, value, onChange)
+fun userField(value: String, onChange: (String) -> Unit) {
+    loginTextField("User", KeyboardType.Text, value, onChange)
 }
 
 @Composable
