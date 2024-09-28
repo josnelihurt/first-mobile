@@ -1,0 +1,12 @@
+{
+  "$id": "josnelihurt.mobile_api_stub.gen.InfoResponse.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "status": {
+      "type": "string"
+    }
+  },
+  "title": "Info Response",
+  "type": "object"
+}

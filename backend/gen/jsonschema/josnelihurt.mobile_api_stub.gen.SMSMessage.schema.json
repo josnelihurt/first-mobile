@@ -1,0 +1,24 @@
+{
+  "$id": "josnelihurt.mobile_api_stub.gen.SMSMessage.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "message": {
+      "type": "string"
+    },
+    "recipient": {
+      "type": "string"
+    },
+    "sender": {
+      "type": "string"
+    },
+    "timestamp": {
+      "$ref": "google.protobuf.Timestamp.schema.json"
+    },
+    "uuid": {
+      "type": "string"
+    }
+  },
+  "title": "SMS Message",
+  "type": "object"
+}

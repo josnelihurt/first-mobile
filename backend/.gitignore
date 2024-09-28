@@ -1,0 +1,3 @@
+app.bin
+*__debug_bin*
+.cache/

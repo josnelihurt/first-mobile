@@ -1,0 +1,12 @@
+{
+  "$id": "josnelihurt.mobile_api_stub.gen.StreamSMSRequest.jsonschema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "phone_number": {
+      "type": "string"
+    }
+  },
+  "title": "StreamSMS Request",
+  "type": "object"
+}

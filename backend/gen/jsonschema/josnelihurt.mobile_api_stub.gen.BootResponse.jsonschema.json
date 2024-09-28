@@ -1,0 +1,12 @@
+{
+  "$id": "josnelihurt.mobile_api_stub.gen.BootResponse.jsonschema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "services": {
+      "$ref": "josnelihurt.mobile_api_stub.gen.ServicesSettings.jsonschema.json"
+    }
+  },
+  "title": "Boot Response",
+  "type": "object"
+}

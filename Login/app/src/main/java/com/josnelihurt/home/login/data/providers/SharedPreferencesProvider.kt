@@ -10,7 +10,7 @@ import javax.inject.Inject
  * Provider for the SharedPreferences, this hides the initialization of the SharedPreferences
  */
 class SharedPreferencesProvider @Inject constructor(
-    private @ApplicationContext val context: Context
+    @ApplicationContext private val context: Context
 ) {
     companion object {
         private const val SHARED_PREFS_NAME = "login_prefs"
@@ -19,16 +19,16 @@ class SharedPreferencesProvider @Inject constructor(
     /**
      * The SharedPreferences instance created by this provider
      */
-    fun get() = sharedPreferences
+    fun get() = _sharedPreferences
 
-    private val masterKeys = MasterKey.Builder(context)
+    private val _masterKeys = MasterKey.Builder(context)
         .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
         .build()
 
-    private val sharedPreferences = EncryptedSharedPreferences.create(
+    private val _sharedPreferences = EncryptedSharedPreferences.create(
         context,
         SHARED_PREFS_NAME,
-        masterKeys,
+        _masterKeys,
         EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
         EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
     )

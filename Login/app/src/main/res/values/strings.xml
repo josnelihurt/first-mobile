@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">Login</string>
+    <string name="app_name">JosnelihurtR</string>
+    <string name="default_server">http://192.168.10.50:8080</string>
 </resources>

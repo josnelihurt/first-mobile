@@ -1,0 +1,18 @@
+{
+  "$id": "josnelihurt.mobile_api_stub.gen.ServicesSettings.jsonschema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "authorization_service_url": {
+      "type": "string"
+    },
+    "client_id": {
+      "type": "string"
+    },
+    "token_service_url": {
+      "type": "string"
+    }
+  },
+  "title": "Services Settings",
+  "type": "object"
+}

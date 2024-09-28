@@ -1,0 +1,12 @@
+{
+  "$id": "josnelihurt.mobile_api_stub.gen.StreamSMSResponse.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "message": {
+      "$ref": "josnelihurt.mobile_api_stub.gen.SMSMessage.schema.json"
+    }
+  },
+  "title": "StreamSMS Response",
+  "type": "object"
+}

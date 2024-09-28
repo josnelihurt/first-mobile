@@ -1,0 +1,56 @@
+syntax = "proto3";
+
+package josnelihurt.mobile_api_stub.gen;
+option go_package = "github.com/josnelihurt/first-mobile/backend/gen";
+import "google/protobuf/timestamp.proto";
+
+import "google/api/annotations.proto";
+
+message ServicesSettings{
+  string authorization_service_url = 1 [json_name = "authorization_service_url"];
+  string token_service_url = 3 [json_name = "token_service_url"];
+  string client_id = 5 [json_name = "client_id"];
+}
+
+message SMSMessage {
+  string uuid = 1 [json_name = "uuid"];
+  google.protobuf.Timestamp timestamp = 3 [json_name = "timestamp"];
+  string message = 5 [json_name = "message"];
+  string sender = 7 [json_name = "sender"];
+  string recipient = 9 [json_name = "recipient"];
+}
+
+service MobileAPIService {
+  rpc Info (InfoRequest) returns (InfoResponse){
+    option (google.api.http) = {
+      get: "/v1/info"
+    };
+  }
+  rpc Boot (BootRequest) returns (BootResponse){
+    option (google.api.http) = {
+      get: "/v1/boot"
+    };
+  }
+  rpc StreamSMS (StreamSMSRequest) returns (stream StreamSMSResponse){
+    option (google.api.http) = {
+      get: "/v1/sms/stream/{phone_number}"
+    };
+  }
+}
+
+message InfoRequest {}
+message InfoResponse {
+  string status = 1 [json_name = "status"];
+}
+
+message BootRequest {}
+message BootResponse {
+  ServicesSettings services = 1 [json_name = "services"];
+}
+
+message StreamSMSRequest {
+  string phone_number = 1 [json_name = "phone_number"];
+}
+message StreamSMSResponse {
+  SMSMessage message = 1 [json_name = "message"];
+}
