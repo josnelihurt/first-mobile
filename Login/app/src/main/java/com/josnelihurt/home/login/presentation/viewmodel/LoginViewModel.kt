@@ -69,15 +69,6 @@ class LoginViewModel @Inject constructor(
         showIdle(LoginState().fromEntity(loginEntity))
     }
 
-    private fun getAuthorizationServiceConfiguration(): AuthorizationServiceConfiguration {
-        return AuthorizationServiceConfiguration(
-            Uri.parse("https://auth.local.josnelihurt.me/application/o/authorize/"), // Authorization endpoint
-            Uri.parse("https://auth.local.josnelihurt.me/application/o/token/") // Token endpoint
-        )
-    }
-
-    /*"qvfuQb1DinG7AN5Z2ch3t4iKZIpCYbtyafdunarn"*/
-
     private fun getAuthorizationRequestIntent(): Intent {
         val oAuthConfiguration = _serverSettings.oAuthConfiguration
 
