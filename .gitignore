@@ -45,10 +45,7 @@ captures/
 build/
 */build/
 !gradle-wrapper.jar
-**/gradle-wrapper.properties
-
-# Kotlin specific files
-*.kts
+!gradle-wrapper.properties
 
 # Avoid Mac system files
 .DS_Store
