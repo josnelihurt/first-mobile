@@ -44,7 +44,7 @@ class MobileAPI (
         .build()
 
     val apiService = _retrofit.create(ApiService::class.java)
-    fun boot(): SettingsEntity {
+    fun boot(): SettingsEntity? {
         val bootResponse = runBlocking {
             try {
                 apiService.boot()
@@ -53,6 +53,6 @@ class MobileAPI (
                 null
             }
         }
-        return bootResponse?.toDomainModel() ?: throw IllegalStateException("Boot response is null")
+        return bootResponse?.toDomainModel()
     }
 }

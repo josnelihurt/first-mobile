@@ -28,7 +28,12 @@ class SettingsRepositoryImpl @Inject constructor(
         val result = loadLocal()
         val mobileAPI = MobileAPI(result.serverConfiguration.server)
         val remoteSettings = mobileAPI.boot()
-        result.oAuthConfiguration = remoteSettings.oAuthConfiguration
+        if (remoteSettings != null) {
+            result.oAuthConfiguration = remoteSettings.oAuthConfiguration
+            result.connectionError = null
+        } else {
+            result.connectionError = "Could not connect to server. Using local configuration."
+        }
         return result
     }
 

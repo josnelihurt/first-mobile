@@ -20,6 +20,7 @@ data class OAuthConfiguration(
 data class SettingsEntity(
     var serverConfiguration: ServerConfiguration = ServerConfiguration(),
     var oAuthConfiguration: OAuthConfiguration = OAuthConfiguration(),
+    var connectionError: String? = null,
 ) {
     fun withServer(server: String): Result<SettingsEntity> = getUri(server).map {
         copy(serverConfiguration = serverConfiguration.withServer(it))

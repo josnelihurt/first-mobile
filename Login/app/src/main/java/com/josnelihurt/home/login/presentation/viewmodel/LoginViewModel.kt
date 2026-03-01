@@ -66,6 +66,9 @@ class LoginViewModel @Inject constructor(
         val loginEntity = authInteractor.restoreLogin()
         val settingsEntity = settingsInteractor.load()
         _serverSettings = settingsEntity
+        if (settingsEntity.connectionError != null) {
+            showError(settingsEntity.connectionError ?: "Connection error")
+        }
         showIdle(LoginState().fromEntity(loginEntity))
     }
 
